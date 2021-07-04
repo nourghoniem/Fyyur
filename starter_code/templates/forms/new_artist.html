@@ -1,0 +1,88 @@
+{% extends 'layouts/main.html' %}
+{% block title %}New Artist{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    <form id="form"  class="form" >
+      <h3 class="form-heading">List a new artist</h3>
+      <div class="form-group">
+        <label for="name" id="name">Name</label>
+        {{ form.name(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <div class="form-group">
+          <label>City & State</label>
+          <div class="form-inline">
+            <div class="form-group">
+              {{ form.city(class_ = 'form-control', id='city' placeholder='City', autofocus = true) }}
+            </div>
+            <div class="form-group">
+              {{ form.state(class_ = 'form-control', id='state', placeholder='State', autofocus = true) }}
+            </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="phone">Phone</label>
+          {{ form.phone(class_ = 'form-control', id='phone', placeholder='xxx-xxx-xxxx', autofocus = true) }}
+        </div>
+      <div class="form-group">
+        <label for="genres">Genres</label>
+        <small>Ctrl+Click to select multiple</small>
+        {{ form.genres(class_ = 'form-control', id= 'genres', placeholder='Genres, separated by commas',  autofocus = true) }}
+      </div>
+      <div class="form-group">
+          <label for="facebook">Facebook Link</label>
+          {{ form.facebook_link(class_ = 'form-control', id='facebook', placeholder='http://', autofocus = true) }}
+        </div>
+      <input type="submit" value="Create Venue" class="btn btn-primary btn-lg btn-block">
+    </form>
+  </div>
+  <script>
+    document.getElementById('form').onsubmit = function(e) {
+     e.preventDefault();
+     const name = document.getElementById('name').value;
+     const city = document.getElementById('city').value;
+     const state = document.getElementById('state').value;
+     const phone = document.getElementById('phone').value;
+     const genres = document.getElementById('genres').value;
+     const facebook = document.getElementById('facebook').value;
+     if(name == "" || city == "" || state =="" || phone=="" || genres == "" || facebook == ""){
+       print("please fill in empty fields")
+     }
+     else if (!name.match("^[A-Za-z]{1,20}, [A-Za-z]{1,20}, [A-Za-z]{1,20}")){
+      print("invalid name")
+     }
+
+     else if (!city.match("^[A-Za-z]{1,20}, [A-Za-z]{1,20}, [A-Za-z]{1,20}")){
+      print("invalid city")
+     }
+     
+     else if (!state.match("^[A-Za-z]{1,20}, [A-Za-z]{1,20}, [A-Za-z]{1,20}")){
+      print("invalid state")
+     }
+
+     else if (!genres.match("^[A-Za-z]{1,20}, [A-Za-z]{1,20}, [A-Za-z]{1,20}")){
+      print("invalid genres")
+     }
+    else if (phone.length() > 11){
+      print("invalid phone")
+    }
+
+    else{
+   
+    fetch('/artists/create',{
+     method: 'POST',
+     body: JSON.stringify({
+       'name':  document.getElementById('name').value,
+       'city': document.getElementById('city').value,
+       'state': document.getElementById('state').value,
+       'phone': document.getElementById('phone').value,
+       'genres':  document.getElementById('genres').value,
+       'facebook': document.getElementById('facebook').value,
+     }),
+     headers: {
+      'Content-Type': 'application/json',
+     }
+  })
+    }
+    }
+</script>
+{% endblock %}
